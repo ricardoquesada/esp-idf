@@ -19,9 +19,9 @@ endif
 unexport CONFIG_
 
 # Unset some environment variables set in the project environment
-CFLAGS :=
+CFLAGS := -I/usr/local/opt/ncurses/include/
 CPPFLAGS :=
-LDFLAGS :=
+LDFLAGS := -L/usr/local/opt/ncurses/lib/ -lncurses
 
 default: mconf conf
 
@@ -186,7 +186,7 @@ dochecklxdialog:
 always := dochecklxdialog
 
 # Add environment specific flags
-EXTRACFLAGS += $(shell $(CONFIG_SHELL) $(srctree)/$(src)/check.sh $(CC) $(CFLAGS))
+CFLAGS += $(shell $(CONFIG_SHELL) $(IDF_PATH)/tools/kconfig/check.sh $(CC) $(CFLAGS))
 
 # generated files seem to need this to find local include files
 CFLAGS_zconf.lex.o	:= -I$(src)
@@ -290,10 +290,10 @@ gconf.glade.h: gconf.glade
 
 
 mconf: $(mconf-objs)
-	$(CC) -o $@ $(mconf-objs) $(LOADLIBES_mconf)
+	$(CC) $(LDFLAGS) -o $@ $(mconf-objs) $(LOADLIBES_mconf)
 
 conf: $(conf-objs)
-	$(CC) -o $@ $(conf-objs) $(LOADLIBES_conf)
+	$(CC) $(LDFLAGS) -o $@ $(conf-objs) $(LOADLIBES_conf)
 
 zconf.tab.c: zconf.lex.c
 

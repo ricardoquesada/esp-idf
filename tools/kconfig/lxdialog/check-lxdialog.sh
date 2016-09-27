@@ -6,7 +6,8 @@ ldflags()
 {
 	if [ $(uname -s) == "Darwin" ]; then 
 		#OSX seems to need intl too
-		echo -n "-lintl "
+		#echo -n "-lintl "
+        echo
 	fi
 	pkg-config --libs ncursesw 2>/dev/null && exit
 	pkg-config --libs ncurses 2>/dev/null && exit
